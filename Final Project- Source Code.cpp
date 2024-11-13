@@ -1,3 +1,3 @@
 //Patrick Acuña & Allyn Novelo 
-#inlcude <iostream>
-Using namespace std;
+#include <iostream>
+using namespace std;
