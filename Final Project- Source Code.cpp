@@ -1,6 +1,7 @@
 //Patrick Acuña & Allyn Novelo 
 #include <iostream>
 #include <cstring>
+#include <vector>
 using namespace std;
 //Base class containing Employee methods and attributes
 class Employee{
@@ -8,7 +9,7 @@ class Employee{
         char firstname[15];
         char lastname[15];
         int employeeID;
-        string department [10] = {"Humanity", "Business", "IT", "Maintenance"};
+        vector<string> department = {"Humanity", "Business", "IT", "Maintenance"};
         float baseSalary;
     public:
 
