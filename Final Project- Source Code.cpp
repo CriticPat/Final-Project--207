@@ -26,6 +26,19 @@ class SalariedEmployee: public Employee{
         float annualsalary;
     public:
 };
+class HourlyEmployee: public Employee{
+    private:
+        float hourlyRate, overtimeRate; 
+        int hourWorked; 
+    public: 
+};
+class CommissionEmployee: public Employee{
+    private: 
+        int salesAmount;
+        float commissionRate, baseSalary; 
+    public: 
+        
+};
 int main(){
     return 0; 
 }
