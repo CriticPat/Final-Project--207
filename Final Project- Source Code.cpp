@@ -12,6 +12,11 @@ class Employee{
         vector<string> department = {"Humanity", "Business", "IT", "Maintenance"};
         float baseSalary;
     public:
+        Employee();
+        virtual void calculateGrossSalary();//function type can be changed
+        virtual void calculateNetSalarry(); //function type can be changed
+        virtual void displayInfo();//function type can be changed
+        void calculateTax();//function type can be changed
 
 };
 //Inherited Class containing its attributes and methods/attributes from Employee Class. 
