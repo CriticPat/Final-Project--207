@@ -37,7 +37,20 @@ class CommissionEmployee: public Employee{
         int salesAmount;
         float commissionRate, baseSalary; 
     public: 
-        
+};
+class Payroll: public Employee{
+    private: 
+        char companyName[20];//more attributes can be added
+    public:
+
+};
+class AnnualPerformanceBonus: public SalariedEmployee, CommissionEmployee, HourlyEmployee{
+    private:
+        //have no clue how to do this
+    public:
+};
+class TaxCalculationSystem{
+
 };
 int main(){
     return 0; 
