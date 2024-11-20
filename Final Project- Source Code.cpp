@@ -19,11 +19,22 @@ class Employee{
             employeeID= id;
             employeeDepartment= department[dep];
             baseSalary= baseSal;
-
         }
-        virtual void calculateGrossSalary();//function type can be changed
-        virtual void calculateNetSalarry(); //function type can be changed
-        virtual void displayInfo();//function type can be changed
+        virtual float calculateGrossSalary(){
+            float grossSal= baseSalary;
+            return grossSal;
+        };//function type can be changed
+        virtual float calculateNetSalarry(){
+            float netSal= baseSalary;
+            return netSal;
+        }; //function type can be changed
+        virtual void displayInfo(){
+            cout<<"Name: "<<firstname<<" "<<lastname<<endl;
+            cout<<"ID: "<<employeeID<<endl;
+            cout<<"Department: "<<employeeDepartment<<endl;
+            cout<<"Gross Salary: "<<calculateGrossSalary()<<endl;
+            cout<<"Net Salary: "<<calculateNetSalarry()<<endl;
+        };//function type can be changed
         void calculateTax();//function type can be changed
 
 };
