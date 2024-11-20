@@ -10,9 +10,17 @@ class Employee{
         char lastname[15];
         int employeeID;
         vector<string> department = {"Humanity", "Business", "IT", "Maintenance"};
+        string employeeDepartment;
         float baseSalary;
     public:
-        Employee();
+        Employee(char* n, char* l, int id, int dep, float baseSal){
+            strcpy(firstname, n);
+            strcpy(lastname, l);
+            employeeID= id;
+            employeeDepartment= department[dep];
+            baseSalary= baseSal;
+
+        }
         virtual void calculateGrossSalary();//function type can be changed
         virtual void calculateNetSalarry(); //function type can be changed
         virtual void displayInfo();//function type can be changed
