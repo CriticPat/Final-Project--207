@@ -46,7 +46,7 @@ class Payroll: public Employee{
 };
 class AnnualPerformanceBonus: public SalariedEmployee, CommissionEmployee, HourlyEmployee{
     private:
-        //have no clue how to do this
+        //have no clue how to do thi
     public:
 };
 class TaxCalculationSystem{
