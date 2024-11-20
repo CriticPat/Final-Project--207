@@ -1,4 +1,4 @@
-//Patrick Acuña & Allyn Novelo 
+//Patrick Acuña & Allyn Novel
 #include <iostream>
 #include <cstring>
 #include <vector>
