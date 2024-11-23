@@ -41,7 +41,23 @@ class CommissionEmployee: public Employee{
 class Payroll: public Employee{
     private: 
         char companyName[20];//more attributes can be added
-    public:
+    public:   
+        void addEmployee(const Employee& employee) {
+            employee.push_back(employee);
+            std::cout << "Employee " << employee.getName() << " added to the payroll system.\n"; // adds an employ into the system
+    }
+        void calculateAllSalaries() const {
+            cout << "Employees in" << companyName << ":\n";
+            for (const auto& emplyee :employees) {
+                empoloyee.displayInfo();
+            }
+        }
+        double totalAnnualPayrollCost() const {
+            double totalCost = 0.0;
+            for (const auto& employee : employees) {
+                totalCost += employee.calculateGrossSalary() * 12; // Annual cost
+            }   
+            return totalCost;
 
 };
 class AnnualPerformanceBonus: public SalariedEmployee, CommissionEmployee, HourlyEmployee{
