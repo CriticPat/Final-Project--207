@@ -70,7 +70,16 @@ class HourlyEmployee: public Employee{
         float hourlyRate, overtimeRate; 
         int hourWorked; 
     public: 
-    HourlyEmployee()
+    HourlyEmployee(char* n, char* l, int id, int dep, float baseSal, float rate, float overrate, int hours):Employee(n, l, id, dep, baseSal), hourlyRate(rate), overtimeRate(overrate), hourWorked(hours){}
+    float calculateGrossSalary() override{
+        float OverTimeHours = (hourWorked>40)?(hourlyRate-40): 0; //Calulates overtime hours
+        float RegularHours= (hourWorked<=40)?(hourWorked): 40;//Calulated regular hours
+        return (hourlyRate*RegularHours)+(overtimeRate*OverTimeHours);
+    }
+    float calculateNetSalary() override{
+        float grossSal= calculateGrossSalary();
+        return grossSal -calculateTax(grossSal);
+    }
 };
 
 //Commission Emloyee Class derived from employee
