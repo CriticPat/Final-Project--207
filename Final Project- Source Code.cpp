@@ -1,7 +1,6 @@
 //Patrick Acuña & Allyn Novel
 #include <iostream>
 #include <cstring>
-#include <vector>
 #include <list>
 using namespace std;
 
@@ -11,15 +10,15 @@ class Employee{
         char firstname[15];
         char lastname[15];
         int employeeID;
-        vector<string> departments = {"Humanity", "Business", "IT", "Maintenance"};
-        string employeeDepartment;
+        string department;
         float baseSalary;
     public:
-        Employee(char* n, char* l, int id, int dep, float baseSal){
+        friend class Payroll;
+        Employee(char* n, char* l, int id, string dep, float baseSal){
             strcpy(firstname, n);
             strcpy(lastname, l);
             employeeID= id;
-            employeeDepartment= departments[dep];
+            department= dep;
             baseSalary= baseSal;
         }
         virtual float calculateGrossSalary(){
@@ -34,9 +33,8 @@ class Employee{
         virtual void displayInfo(){
             cout<<"Name: "<<firstname<<" "<<lastname<<endl;
             cout<<"ID: "<<employeeID<<endl;
-            cout<<"Department: "<<employeeDepartment<<endl;
-        };//displaying info ogf the Employee Class
-
+            cout<<"Department: "<<department<<endl;
+        };//displaying info of the Employee Class
         float calculateTax(float grossSal){
             if(grossSal<=3000){
                 return grossSal*0.10; 
@@ -45,7 +43,8 @@ class Employee{
             }else if(grossSal>7000){
                 return grossSal*0.30;
             }
-        };//Calculating gross Salary
+            return 0.0f;
+        }//Calculating gross Salary
 
 };
 //Inherited Class containing its attributes and methods/attributes from Employee Class. 
@@ -54,7 +53,7 @@ class SalariedEmployee: public Employee{
         float monthlysalary; 
         float annualBonus;
     public:
-    SalariedEmployee(char* n, char* l, int id, int dep, float baseSal, float monthSal, float bonus): Employee(n, l, id, dep, baseSal),monthlysalary(monthSal), annualBonus(bonus){}
+    SalariedEmployee(char* n, char* l, int id, string dep, float baseSal, float monthSal, float bonus): Employee(n, l, id, dep, baseSal),monthlysalary(monthSal), annualBonus(bonus){}
     float calculateGrossSalary() override{ 
         return monthlysalary + (annualBonus / 12);
     } 
@@ -75,9 +74,9 @@ class HourlyEmployee: public Employee{
         float hourlyRate, overtimeRate; 
         int hourWorked; 
     public: 
-    HourlyEmployee(char* n, char* l, int id, int dep, float baseSal, float rate, float overrate, int hours):Employee(n, l, id, dep, baseSal), hourlyRate(rate), overtimeRate(overrate), hourWorked(hours){}
+    HourlyEmployee(char* n, char* l, int id, string dep, float baseSal, float rate, float overrate, int hours):Employee(n, l, id, dep, baseSal), hourlyRate(rate), overtimeRate(overrate), hourWorked(hours){}
     float calculateGrossSalary() override{
-        float OverTimeHours = (hourWorked>40)?(hourlyRate-40): 0; //Calulates overtime hours
+        float OverTimeHours =(hourWorked > 40)?(hourWorked-40):0;//Calulates overtime hours
         float RegularHours= (hourWorked<=40)?(hourWorked): 40;//Calulated regular hours
         return (hourlyRate*RegularHours)+(overtimeRate*OverTimeHours);
     }
@@ -99,7 +98,7 @@ class CommissionEmployee: public Employee{
     private: 
         float commissionRate, salesAmount; 
     public: 
-    CommissionEmployee(char* n, char* l, int id, int dep, float baseSal, float sales, float rate): Employee(n, l ,id, dep, baseSal), salesAmount(sales), commissionRate(rate){}
+    CommissionEmployee(char* n, char* l, int id, string dep, float baseSal, float sales, float rate): Employee(n, l ,id, dep, baseSal), salesAmount(sales), commissionRate(rate){}
     float calculateGrossSalary() override{
         return baseSalary + (salesAmount*commissionRate);
     }
@@ -129,41 +128,42 @@ class Payroll{
         employees.push_back(employee);//Pushes the object to the employee list
     }
     void calculateAllSalaries(){
-        int totalEmployees=0;
-        float totalGrossSalaries=0;
-        float totalNetSalaries=0;
-        for (Employee* employee : employees) {
-            totalEmployees++;
-            totalGrossSalaries += employee->calculateGrossSalary();
-            totalNetSalaries += employee->calculateNetSalary();//Add the Gross Salary calculated at each object
-        }
+    int totalEmployees = 0;
+    float totalGrossSalaries = 0;
+    float totalNetSalaries = 0;
+    for (Employee* employee : employees) {
+        totalEmployees++;
+        totalGrossSalaries += employee->calculateGrossSalary();
+        totalNetSalaries += employee->calculateNetSalary(); 
+    }
     cout << "Total number of employees: " << totalEmployees << endl;
     cout << "Sum of gross salaries: " << totalGrossSalaries << endl;
+    cout << "Sum of net salaries: " << totalNetSalaries << endl;
     }
     void displayAllEmployees(){
         for(Employee*employee: employees){//for each employee, dislpayInfo() will be used
+            cout<<"=========================="<<endl;
             employee->displayInfo();
             cout<<"=========================="<<endl;
         }
     }
     void totalAnnualPayRollCost(){
-        float AnnualPayroll= 0;
-        for(Employee*employee: employees){
-            AnnualPayroll += employee->calculateGrossSalary() * 12; // For each caluclateGrossSalary()its going to multiply by 12 and added to AnnualPayRoll
-        }
+    float AnnualPayroll = 0;
+    for(Employee* employee : employees){
+        AnnualPayroll += employee->calculateGrossSalary() * 12; 
     }
-
+    cout << "Total Annual Payroll Cost: " << AnnualPayroll << endl;
+    }
     void menu(){
         int choice=0; 
         cout<<"Welcome to the "<<companyName<<" payroll system \n";
         do{
             cout<<"-----------------------------------------------"<<endl;
             cout<<"1. Create Employee\n"
-                "2. Edit Employee\n"
-                "3. Calculate Salaries\n"
-                "4. Display all Employees\n" 
-                "5. Total Annual Payroll cost\n"
-                "6. Exit"<<endl;
+                "2. Calculate Salaries\n"
+                "3. Display all Employees\n"
+                "4. Total Annual Payroll cost\n" 
+                "5. Exit"<<endl;
             cout<<"Choose functions to operate: ";
             cin>>choice;
             switch (choice) {
@@ -177,17 +177,14 @@ class Payroll{
                     cin>>type;
                     cout<<"-----------------------------------------------"<<endl; 
                     char f[15], l[15]; 
-                    int dep, id;
+                    int id;
+                    string dep;
                     float baseSal = 0; // Initialize baseSal
                     cout<<"Enter First Name: ";
                     cin>>f; 
                     cout<<"Enter Last Name: ";
                     cin>>l;
-                    cout<<"Available departments:"<<endl;
-                    for(int i = 0; i<Employee::departments.size(); ++i) {//Showing departments available
-                        cout<<i<<". "<<Employee::departments[i]<<endl;
-                    }
-                    cout<<"Enter department number: ";
+                    cout<<"Enter department: ";
                     cin>>dep;
                     cout<<"Enter Employee ID: ";
                     cin>>id;
@@ -224,30 +221,26 @@ class Payroll{
                     }}
                     break;
                 case 2:
-                    break;
-                case 3:
                     calculateAllSalaries();
                     break;
-                case 4:
+                case 3:
                     displayAllEmployees();
                     break;
-                case 5:
+                case 4:
                     totalAnnualPayRollCost();
                     break;
-                case 6:
+                case 5:
                     cout << "Exiting..." << endl;
                     break;
                 default:
                     cout<<"Invalid option!"<<endl;
                     break;
             }
-        } while (choice!=6);
+        } while (choice!=5);
     }
 };
-
-
 int main(){
-    Payroll myPayroll("Tech Innovations");
+    Payroll myPayroll("CoP Tech Advancements");
     myPayroll.menu(); 
     return 0; 
 }
