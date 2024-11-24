@@ -183,8 +183,8 @@ class Payroll{
                     cin>>f; 
                     cout<<"Enter Last Name: ";
                     cin>>l;
-                    cout << "Available departments:" << endl;
-                    for (int i = 0; i<Employee::departments.size(); ++i) {//Showing departments available
+                    cout<<"Available departments:"<<endl;
+                    for(int i = 0; i<Employee::departments.size(); ++i) {//Showing departments available
                         cout<<i<<". "<<Employee::departments[i]<<endl;
                     }
                     cout<<"Enter department number: ";
