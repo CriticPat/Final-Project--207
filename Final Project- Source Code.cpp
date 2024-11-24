@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 using namespace std;
+
 //Base class containing Employee methods and attributes
 class Employee{
     protected:
@@ -34,8 +35,6 @@ class Employee{
             cout<<"Name: "<<firstname<<" "<<lastname<<endl;
             cout<<"ID: "<<employeeID<<endl;
             cout<<"Department: "<<employeeDepartment<<endl;
-            cout<<"Gross Salary: "<<calculateGrossSalary()<<endl;
-            cout<<"Net Salary: "<<calculateNetSalary()<<endl;
         };//displaying info ogf the Employee Class
 
         float calculateTax(float grossSal){
@@ -63,6 +62,11 @@ class SalariedEmployee: public Employee{
         float grossSal= calculateGrossSalary();
         return grossSal -calculateTax(grossSal);
     }
+    void displayInfo() override{
+        Employee::displayInfo();
+        cout<<"Gross Salary: "<<calculateGrossSalary()<<endl;
+        cout<<"Net Salary: "<<calculateNetSalary()<<endl;
+    }
 };
 
 //Hourly Employee Class 
@@ -81,6 +85,13 @@ class HourlyEmployee: public Employee{
         float grossSal= calculateGrossSalary();
         return grossSal -calculateTax(grossSal);
     }
+    void displayInfo() override{
+        Employee::displayInfo();
+        cout<<"Hourly Rate: "<<hourlyRate<<endl;
+        cout<<"Hours worked: "<<hourWorked<<endl;
+        cout<<"Gross Salary: "<<calculateGrossSalary()<<endl;
+        cout<<"Net Salary: "<<calculateNetSalary()<<endl;
+    }
 };
 
 //Commission Emloyee Class derived from employee
@@ -95,6 +106,13 @@ class CommissionEmployee: public Employee{
     float calculateNetSalary() override{
         float grossSal= calculateGrossSalary();
         return grossSal - calculateTax(grossSal);
+    }
+    void displayInfo() override{
+        Employee::displayInfo();
+        cout<<"Commission Rate: "<<commissionRate<<endl;
+        cout<<"Sales amount: "<<salesAmount<<endl;
+        cout<<"Gross Salary: "<<calculateGrossSalary()<<endl;
+        cout<<"Net Salary: "<<calculateNetSalary()<<endl;
     }
 };
 
@@ -137,68 +155,99 @@ class Payroll{
 
     void menu(){
         int choice=0; 
-        cout<<"Welcome to the "<<companyName<<" payroll system /n";
+        cout<<"Welcome to the "<<companyName<<" payroll system \n";
         do{
-            cout<<"-----------------------------------------------";
-            cout<<"1. Create Employee/n"
-                  "2. Edit Employee/n"
-                  "3. Calculate Salaries/n"
-                  "4. Display all Employees/n" 
-                  "5. Total Annual Payroll cost/n"
-                  "6. Exit";
+            cout<<"-----------------------------------------------"<<endl;
+            cout<<"1. Create Employee\n"
+                "2. Edit Employee\n"
+                "3. Calculate Salaries\n"
+                "4. Display all Employees\n" 
+                "5. Total Annual Payroll cost\n"
+                "6. Exit"<<endl;
             cout<<"Choose functions to operate: ";
             cin>>choice;
-            switch (choice)
-            {
-            case 1:
-                int type;
-                cout<<"-----------------------------------------------";
-                cin>>type; 
-                cout<<"1. Salaried Employee/n"
-                      "2. Hourly Employee/n"
-                      "3. Commission Emloyee/n";
-                cout<<"Choose type of employee: ";
-                string f, l;
-                int dep, id;
-                cout<<"Enter First Name: ";
-                cin>>f; 
-                cout<<"Enter Last Name: ";
-                cin>>l;
-                cout<<"Enter department: ";
-                cin>>dep;
-                cout<<"Enter Employee ID: ";
-                cin>>id;
-                if(type==1){
-                    float monthSal, bonus;
-                    cout<<"Enter monthly salary: ";
-                    cin>>monthSal;
-                    cout<<"Enter Bonus: ";
-                    cin>>bonus;
-                }else if(type==2){
-                    float rate, overrate;
-                    int hours; 
-                    cout<<"Enter hours: ";
-                    cin>>hours;
-                    cout<<"Enter hourly rate: ";
-                    cin>>rate;
-                    overrate = rate*1.5; 
-                    cout<<"Overtime rate: "<<overrate;
+            switch (choice) {
+                case 1: {
+                    int type;
+                    cout<<"-----------------------------------------------"<<endl;
+                    cout<<"1. Salaried Employee\n"
+                        "2. Hourly Employee\n"
+                        "3. Commission Employee\n";
+                    cout<<"Choose type of employee: ";
+                    cin>>type;
+                    cout<<"-----------------------------------------------"<<endl; 
+                    char f[15], l[15]; 
+                    int dep, id;
+                    float baseSal = 0; // Initialize baseSal
+                    cout<<"Enter First Name: ";
+                    cin>>f; 
+                    cout<<"Enter Last Name: ";
+                    cin>>l;
+                    cout << "Available departments:" << endl;
+                    for (int i = 0; i<Employee::departments.size(); ++i) {//Showing departments available
+                        cout<<i<<". "<<Employee::departments[i]<<endl;
+                    }
+                    cout<<"Enter department number: ";
+                    cin>>dep;
+                    cout<<"Enter Employee ID: ";
+                    cin>>id;
+                    if(type==1){
+                        float monthSal, bonus;
+                        cout<<"Enter monthly salary: ";
+                        cin>>monthSal;
+                        cout<<"Enter Bonus: ";
+                        cin>>bonus;
+                        addEmployee(new SalariedEmployee(f, l, id, dep, baseSal, monthSal, bonus));
+                    }else if(type==2){
+                        float rate, overrate;
+                        int hours; 
+                        cout<<"Enter hours: ";
+                        cin>>hours;
+                        cout<<"Enter hourly rate: ";
+                        cin>>rate;
+                        overrate = rate*1.5; 
+                        cout<<"Overtime rate: "<<overrate<<endl; 
+                        addEmployee(new HourlyEmployee(f, l, id, dep, baseSal, rate, overrate, hours));
 
-                }
-            default:
-                cout<<"Invalid option!";
-                break;
+                    }else if(type==3){
+                        int sales;
+                        float rate; 
+                        cout<<"Enter amount of sales: ";
+                        cin>>sales;
+                        cout<<"Enter sales rate: ";
+                        cin>>rate; 
+                        cout<<"Enter base salary: ";
+                        cin>>baseSal;
+                        addEmployee(new CommissionEmployee(f, l, id, dep, baseSal, sales, rate));
+                    } else {
+                        cout << "Invalid employee type." << endl;
+                    }}
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    calculateAllSalaries();
+                    break;
+                case 4:
+                    displayAllEmployees();
+                    break;
+                case 5:
+                    totalAnnualPayRollCost();
+                    break;
+                case 6:
+                    cout << "Exiting..." << endl;
+                    break;
+                default:
+                    cout<<"Invalid option!"<<endl;
+                    break;
             }
-        }while (choice!=6);
+        } while (choice!=6);
     }
 };
-class AnnualPerformanceBonus: public SalariedEmployee, CommissionEmployee, HourlyEmployee{
-    private:
-        //have no clue how to do thi
-    public:
-};
+
 
 int main(){
     Payroll myPayroll("Tech Innovations");
+    myPayroll.menu(); 
     return 0; 
 }
