@@ -9,7 +9,7 @@ class Employee{
         char firstname[15];
         char lastname[15];
         int employeeID;
-        vector<string> department = {"Humanity", "Business", "IT", "Maintenance"};
+        vector<string> departments = {"Humanity", "Business", "IT", "Maintenance"};
         string employeeDepartment;
         float baseSalary;
     public:
@@ -17,33 +17,51 @@ class Employee{
             strcpy(firstname, n);
             strcpy(lastname, l);
             employeeID= id;
-            employeeDepartment= department[dep];
+            employeeDepartment= departments[dep];
             baseSalary= baseSal;
         }
         virtual float calculateGrossSalary(){
             float grossSal= baseSalary;
             return grossSal;
         };//function type can be changed
-        virtual float calculateNetSalarry(){
+        virtual float calculateNetSalary(){
             float netSal= baseSalary;
             return netSal;
-        }; //function type can be changed
+        }; //
+
         virtual void displayInfo(){
             cout<<"Name: "<<firstname<<" "<<lastname<<endl;
             cout<<"ID: "<<employeeID<<endl;
             cout<<"Department: "<<employeeDepartment<<endl;
             cout<<"Gross Salary: "<<calculateGrossSalary()<<endl;
-            cout<<"Net Salary: "<<calculateNetSalarry()<<endl;
-        };//function type can be changed
-        void calculateTax();//function type can be changed
+            cout<<"Net Salary: "<<calculateNetSalary()<<endl;
+        };//displaying info ogf the Employee Class
+
+        float calculateTax(float grossSal){
+            if(grossSal<1500){
+                return grossSal; 
+            }else if(grossSal<3000){
+                return grossSal*0.10;
+            }else if(grossSal>=3000){
+                return grossSal*0.215;
+            }
+        };//Calculating gross Salary
 
 };
 //Inherited Class containing its attributes and methods/attributes from Employee Class. 
 class SalariedEmployee: public Employee{
     private:
         float monthlysalary; 
-        float annualsalary;
+        float annualBonus;
     public:
+    SalariedEmployee(char* n, char* l, int id, int dep, float baseSal, float monthSal, float bonus): Employee(n, l, id, dep, baseSal),monthlysalary(monthSal), annualBonus(bonus){}
+    float calculateGrossSalary() override{ 
+        return monthlysalary + (annualBonus / 12);
+    } 
+    float calculateNetSalary() override{
+        float grossSal= calculateGrossSalary();
+        return grossSal -calculateTax(grossSal);
+    }
 };
 class HourlyEmployee: public Employee{
     private:
