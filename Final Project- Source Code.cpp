@@ -134,12 +134,70 @@ class Payroll{
             AnnualPayroll += employee->calculateGrossSalary() * 12; // For each caluclateGrossSalary()its going to multiply by 12 and added to AnnualPayRoll
         }
     }
+
+    void menu(){
+        int choice=0; 
+        cout<<"Welcome to the "<<companyName<<" payroll system /n";
+        do{
+            cout<<"-----------------------------------------------";
+            cout<<"1. Create Employee/n"
+                  "2. Edit Employee/n"
+                  "3. Calculate Salaries/n"
+                  "4. Display all Employees/n" 
+                  "5. Total Annual Payroll cost/n"
+                  "6. Exit";
+            cout<<"Choose functions to operate: ";
+            cin>>choice;
+            switch (choice)
+            {
+            case 1:
+                int type;
+                cout<<"-----------------------------------------------";
+                cin>>type; 
+                cout<<"1. Salaried Employee/n"
+                      "2. Hourly Employee/n"
+                      "3. Commission Emloyee/n";
+                cout<<"Choose type of employee: ";
+                string f, l;
+                int dep, id;
+                cout<<"Enter First Name: ";
+                cin>>f; 
+                cout<<"Enter Last Name: ";
+                cin>>l;
+                cout<<"Enter department: ";
+                cin>>dep;
+                cout<<"Enter Employee ID: ";
+                cin>>id;
+                if(type==1){
+                    float monthSal, bonus;
+                    cout<<"Enter monthly salary: ";
+                    cin>>monthSal;
+                    cout<<"Enter Bonus: ";
+                    cin>>bonus;
+                }else if(type==2){
+                    float rate, overrate;
+                    int hours; 
+                    cout<<"Enter hours: ";
+                    cin>>hours;
+                    cout<<"Enter hourly rate: ";
+                    cin>>rate;
+                    overrate = rate*1.5; 
+                    cout<<"Overtime rate: "<<overrate;
+
+                }
+            default:
+                cout<<"Invalid option!";
+                break;
+            }
+        }while (choice!=6);
+    }
 };
 class AnnualPerformanceBonus: public SalariedEmployee, CommissionEmployee, HourlyEmployee{
     private:
         //have no clue how to do thi
     public:
 };
+
 int main(){
     Payroll myPayroll("Tech Innovations");
     return 0; 
