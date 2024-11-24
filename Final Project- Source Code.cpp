@@ -107,13 +107,33 @@ class Payroll{
     Payroll(const char*cname){
         strcpy(companyName,cname);
     }
-    void addEmployee(Employee*employee){
-        employees.push_back(employee);
+    void addEmployee(Employee*employee){//Creates a variable pointer, employee, to the Employee object
+        employees.push_back(employee);//Pushes the object to the employee list
     }
     void calculateAllSalaries(){
-        
+        int totalEmployees=0;
+        float totalGrossSalaries=0;
+        float totalNetSalaries=0;
+        for (Employee* employee : employees) {
+            totalEmployees++;
+            totalGrossSalaries += employee->calculateGrossSalary();
+            totalNetSalaries += employee->calculateNetSalary();//Add the Gross Salary calculated at each object
+        }
+    cout << "Total number of employees: " << totalEmployees << endl;
+    cout << "Sum of gross salaries: " << totalGrossSalaries << endl;
     }
-
+    void displayAllEmployees(){
+        for(Employee*employee: employees){//for each employee, dislpayInfo() will be used
+            employee->displayInfo();
+            cout<<"=========================="<<endl;
+        }
+    }
+    void totalAnnualPayRollCost(){
+        float AnnualPayroll= 0;
+        for(Employee*employee: employees){
+            AnnualPayroll += employee->calculateGrossSalary() * 12; // For each caluclateGrossSalary()its going to multiply by 12 and added to AnnualPayRoll
+        }
+    }
 };
 class AnnualPerformanceBonus: public SalariedEmployee, CommissionEmployee, HourlyEmployee{
     private:
