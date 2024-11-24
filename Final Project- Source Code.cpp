@@ -38,12 +38,12 @@ class Employee{
         };//displaying info ogf the Employee Class
 
         float calculateTax(float grossSal){
-            if(grossSal<1500){
-                return grossSal; 
-            }else if(grossSal<3000){
-                return grossSal*0.10;
-            }else if(grossSal>=3000){
-                return grossSal*0.215;
+            if(grossSal<=3000){
+                return grossSal*0.10; 
+            }else if(grossSal<=7000){
+                return grossSal*0.20;
+            }else if(grossSal>7000){
+                return grossSal*0.30;
             }
         };//Calculating gross Salary
 
@@ -63,12 +63,17 @@ class SalariedEmployee: public Employee{
         return grossSal -calculateTax(grossSal);
     }
 };
+
+//Hourly Employee Class 
 class HourlyEmployee: public Employee{
     private:
         float hourlyRate, overtimeRate; 
         int hourWorked; 
     public: 
+    HourlyEmployee()
 };
+
+//Commission Emloyee Class derived from employee
 class CommissionEmployee: public Employee{
     private: 
         int salesAmount;
