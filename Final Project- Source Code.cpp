@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <list>
 using namespace std;
 //Base class containing Employee methods and attributes
 class Employee{
@@ -85,14 +86,33 @@ class HourlyEmployee: public Employee{
 //Commission Emloyee Class derived from employee
 class CommissionEmployee: public Employee{
     private: 
-        int salesAmount;
-        float commissionRate, baseSalary; 
+        float commissionRate, salesAmount; 
     public: 
+    CommissionEmployee(char* n, char* l, int id, int dep, float baseSal, float sales, float rate): Employee(n, l ,id, dep, baseSal), salesAmount(sales), commissionRate(rate){}
+    float calculateGrossSalary() override{
+        return baseSalary + (salesAmount*commissionRate);
+    }
+    float calculateNetSalary() override{
+        float grossSal= calculateGrossSalary();
+        return grossSal - calculateTax(grossSal);
+    }
 };
-class Payroll: public Employee{
+
+//Payroll class
+class Payroll{
     private: 
-        char companyName[20];//more attributes can be added
+        char companyName[20];
+        list<Employee*> employees; //Using list to store employees object
     public:
+    Payroll(const char*cname){
+        strcpy(companyName,cname);
+    }
+    void addEmployee(Employee*employee){
+        employees.push_back(employee);
+    }
+    void calculateAllSalaries(){
+        
+    }
 
 };
 class AnnualPerformanceBonus: public SalariedEmployee, CommissionEmployee, HourlyEmployee{
@@ -100,23 +120,7 @@ class AnnualPerformanceBonus: public SalariedEmployee, CommissionEmployee, Hourl
         //have no clue how to do thi
     public:
 };
-class TaxCalculationSystem{
-
-};
 int main(){
     Payroll myPayroll("Tech Innovations");
-
-    // Adding employees
-    myPayroll.addEmployee(Employee("Alice", 5000)); // Salaried employee
-    myPayroll.addEmployee(Employee("Bob", 20, 160)); // Hourly employee (20/hour for 160 hours)
-    myPayroll.addEmployee(Employee("Charlie", 0.10, 10000)); // Commission-based employee (10% commission on $10,000 sales)
-
-    // Display all employees and calculate salaries
-    myPayroll.displayAllEmployees();
-    myPayroll.calculateAllSalaries();
-
-    // Calculate total annual payroll cost
-    double totalCost = myPayroll.totalAnnualPayrollCost();
-    std::cout << "Total Annual Payroll Cost: $" << std::fixed << std::setprecision(2) << totalCost << "\n";
     return 0; 
 }
